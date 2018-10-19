@@ -17,6 +17,14 @@ Layer::Layer(int const& m_nbIn, int const& m_nbOut): nbIn(m_nbIn),nbOut(m_nbOut)
 {
     randomFilling();
 }
+Layer::Layer(vector<int> const& v): nbIn(1),nbOut(v.size())
+{
+    randomFilling();//Clean this
+    for(int i=0; i<(int)v.size(); i++)
+    {
+        this->matrix[0][i]=(float)v[i];
+    }
+}
 
 void Layer::randomFilling(){
     for(int i=0; i<nbIn; i++){
@@ -53,6 +61,7 @@ void Layer::toString() const{
 
 
 Layer operator*(Layer const& a, Layer const& b){
+    //cout << a.getNbIn()<< " : " << a.getNbOut()<< " U " << b.getNbIn()<< " : " << b.getNbOut()<<endl;
     Layer result(a.getNbIn(),b.getNbOut());
     float cpt;
     for(int i=0; i<a.getNbIn(); i++){
