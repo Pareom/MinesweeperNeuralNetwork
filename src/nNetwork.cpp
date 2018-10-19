@@ -7,6 +7,8 @@ NNetwork::NNetwork(vector<int> layerSize){
 
     setLayers(layerSize);
     toString();
+    cout << "----------Evalue---------"<<endl;
+    evalue();
 }
 
 void NNetwork::setLayers(vector<int> layerSize){
@@ -15,6 +17,18 @@ void NNetwork::setLayers(vector<int> layerSize){
     }
 }
 
+void NNetwork::evalue(){
+    Layer copy(this->layers[0]);
+    for(int i=1; i<(int)this->layers.size(); i++){
+        copy=copy*layers[i];
+
+    }
+    copy.toString();
+
+}
 void NNetwork::toString(){
-    for(int i = 0; i<(int)this->layers.size(); i++){this->layers[i].toString();}
+    for(int i = 0; i<(int)this->layers.size(); i++){
+        this->layers[i].toString();
+    }
+
 }

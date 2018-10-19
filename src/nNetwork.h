@@ -12,6 +12,7 @@ class NNetwork
 
     NNetwork(std::vector<int> layerSize);
     void setLayers(std::vector<int> layerSize);
+    void evalue();
     void toString();
 
     private:

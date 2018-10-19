@@ -10,9 +10,9 @@ int main()
 {
 
     srand(time(0));
-    vector<int> v(5);
-    for(int i =0; i<5;i++){
-        v[i]=i+1;
+    vector<int> v(4);
+    for(int i =1; i<(int)v.size();i++){
+        v[i]=3;
     }
     NNetwork test (v);
     return 0;
