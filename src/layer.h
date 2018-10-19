@@ -27,6 +27,3 @@ class Layer
 
 Layer operator*(Layer const& a, Layer const& b);
 #endif
-/*
-Evalue()
-Use this function to make all the compution of the network assuming the layer 1 is the input and the last*/
