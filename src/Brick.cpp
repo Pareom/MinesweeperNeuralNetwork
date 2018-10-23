@@ -12,7 +12,7 @@ class Brick
 
 	void Brick::setValue(int value)
 	{
-		this.value = value;
+		this.vale = value;
 	}
 
 	int Brick::getValue()
