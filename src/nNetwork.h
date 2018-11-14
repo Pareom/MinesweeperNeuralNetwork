@@ -6,7 +6,7 @@
 #include <vector>
 #include "layer.h"
 
-class NNetwork
+class NNetwork // Classe nNetwork
 {
     public:
 
