@@ -5,6 +5,7 @@
 #include <vector>
 #include "Sensor.h"
 #include "Line.h"
+#include "nNetwork.h"
 
 class Car
 {
@@ -15,7 +16,7 @@ class Car
 		void setPosSensor(int idSensor);
 		int refreshPosSensor(int idSensor, Line wall); //retourne 1 si crash
 		int refreshPosSensor(int idSensor, std::vector<Line> wallArray, int wallsNumber); //retourne 1 si crash
-		//std::vector<float> 
+		//std::vector<float>
 		void setPosCar(float newposX, float newposY, float newrotZ);
 		float getposX();
 		float getposY();
@@ -31,6 +32,7 @@ class Car
 		float rotZ;
 		float lengthSensor;
 		int testCrash;
+		NNetwork brain;
 
 };
 

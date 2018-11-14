@@ -13,7 +13,7 @@ main.o:		./src/main.cpp ./src/Graphic.h
 Graphic.o:	./src/Graphic.cpp ./src/Graphic.h ./src/Car.h ./src/Line.h
 			g++ -Wall -c ./src/Graphic.cpp
 
-Car.o:	./src/Car.cpp ./src/Car.h ./src/Sensor.h ./src/Line.h
+Car.o:	./src/Car.cpp ./src/Car.h ./src/Sensor.h ./src/Line.h ./src/nNetwork.h
 			g++ -Wall -c ./src/Car.cpp
 
 Sensor.o:	./src/Sensor.cpp ./src/Sensor.h

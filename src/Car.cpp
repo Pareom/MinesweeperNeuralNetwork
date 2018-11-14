@@ -1,19 +1,26 @@
 #include "Car.h"
 #include "Sensor.h"
 #include "Line.h"
+#include "nNetwork.h"
 #include <vector>
 #include <iostream>
 #include <math.h>
-
-using namespace std; 
+using namespace std;
 
 #define PI 3.14159265359
 
-Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar), posX(i_posX), posY(i_posY), rotZ(i_rotZ)
+Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar), posX(i_posX), posY(i_posY), rotZ(i_rotZ), brain(std::vector<int>(2,1))
 {
 	lengthSensor=100;
 	testCrash=0;
 
+	//préparation cerveau
+	vector<int> layerSize;
+	layerSize.push_back(5);
+	layerSize.push_back(16);
+	layerSize.push_back(2);
+	NNetwork brain(layerSize);
+	//
 	for(int i=0; i<5; i++)
 	{
 		sensorArray.push_back(Sensor(i,-(PI/2)+i*(PI/4),0,0));
@@ -21,11 +28,18 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar)
 	}
 }
 
-Car::Car(int i_idCar) : idCar(i_idCar), posX(100), posY(100), rotZ(45)
+Car::Car(int i_idCar) : idCar(i_idCar), posX(100), posY(100), rotZ(45), brain(std::vector<int>(2,1))
 {
+
 	lengthSensor=100;
 	testCrash=0;
-
+	//préparation cerveau
+	vector<int> layerSize;
+	layerSize.push_back(5);
+	layerSize.push_back(16);
+	layerSize.push_back(2);
+	NNetwork brain (layerSize);
+	//
 	for(int i=0; i<5; i++)
 	{
 		sensorArray.push_back(Sensor(i,-(PI/2)+i*(PI/4),0,0));
@@ -49,7 +63,7 @@ int Car::refreshPosSensor(int idSensor, Line wall)
 	{
 		prop1 = ((this->posY-wall.posY1)*(wall.posX2-wall.posX1)+(wall.posX1-this->posX)*(wall.posY2-wall.posY1))/scalarProduct;
 		prop2 = ((this->posY-wall.posY1)*(sensorArray[idSensor].x2-this->posX)+(wall.posX1-this->posX)*(sensorArray[idSensor].y2-this->posY))/scalarProduct;
-	
+
 		if((prop1 < 1 && prop1 >= 0) && (prop2 < 1 && prop2 >= 0))
 		{
 			sensorArray[idSensor].x2 = (sensorArray[idSensor].x2-this->posX)*prop1 + this->posX;
@@ -81,7 +95,7 @@ int Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber)
 		if(scalarProduct[i]!=0)
 		{
 			prop1.push_back(((this->posY-wallArray[i].posY1)*(wallArray[i].posX2-wallArray[i].posX1)+(wallArray[i].posX1-this->posX)*(wallArray[i].posY2-wallArray[i].posY1))/scalarProduct[i]);
-			prop2.push_back(((this->posY-wallArray[i].posY1)*(sensorArray[idSensor].x2-this->posX)+(wallArray[i].posX1-this->posX)*(sensorArray[idSensor].y2-this->posY))/scalarProduct[i]);		
+			prop2.push_back(((this->posY-wallArray[i].posY1)*(sensorArray[idSensor].x2-this->posX)+(wallArray[i].posX1-this->posX)*(sensorArray[idSensor].y2-this->posY))/scalarProduct[i]);
 		}
 		else
 		{
@@ -125,15 +139,15 @@ void Car::setPosCar(float newposX, float newposY, float newrotZ)
 
 float Car::getposX()
 {
-	return this->posX; 
+	return this->posX;
 }
 
 float Car::getposY()
 {
-	return this->posY; 
+	return this->posY;
 }
 
 float Car::getrotZ()
 {
-	return this->rotZ; 
+	return this->rotZ;
 }
