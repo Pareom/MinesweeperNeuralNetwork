@@ -25,11 +25,12 @@ int main()
     Graphic test; // Création de la classe Graphic
 
     int carsNumber(8);
+    int carLeft=carsNumber;
     vector<Car> carArray;
 
     for (int i=0; i<carsNumber; i++)    //Remplissage du tableau des voitures
     {
-        carArray.push_back(Car(i, 300, 300, -180+i*45, 120*(1+rand()%2), 120*rand()%3, 120*rand()%3)); // Création des voitures
+        carArray.push_back(Car(i, 300, 300, -180/*+i*45*/, rand()%240, rand()%240, rand()%240)); // Création des voitures
     }
 
     int wallsNumber(4); // Nombre de murs
@@ -39,7 +40,6 @@ int main()
     wallArray.push_back(Line(595,5,595,595));
     wallArray.push_back(Line(5,5,595,5));
     wallArray.push_back(Line(5,595,595,595));
-
 
     while (window.isOpen())  // Boucle principale + Affichage
     {
@@ -66,13 +66,14 @@ int main()
 
             for(int i=0; i<carsNumber; i++)
             {
-
+              if(carArray[i].alive)
+              {
                 carArray[i].moveCar(); // Déplacement de la voiture pour le prochain tour
                 for(int j=0; j<5; j++) //Calcul des Capteurs (collision)
                 {
-                    testEnd+=carArray[i].refreshPosSensor(j, wallArray, wallsNumber);
+                    carArray[i].refreshPosSensor(j, wallArray, wallsNumber);
                 }
-
+              }
                 displayLengthTest = carArray[i].getLengthSensors();  //Récuperation des longueurs des capteurs
 
 

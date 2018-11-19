@@ -11,7 +11,7 @@ using namespace std;
 
 #define PI 3.14159265359
 
-Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, int B) : colorR(R), colorG(G), colorB(B), brain(std::vector<int>(2,1)), idCar(i_idCar), posX(i_posX), posY(i_posY), rotZ(i_rotZ)
+Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, int B) : colorR(R), colorG(G), colorB(B), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar),posX(i_posX), posY(i_posY), rotZ(i_rotZ)
 {
 	lengthSensor=100;
 	testCrash=0;
@@ -30,7 +30,7 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, in
 	}
 }
 
-Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int>(2,1)), idCar(i_idCar), posX(100), posY(100), rotZ(90)
+Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(100), posY(100), rotZ(90)
 {
 	lengthSensor=100;
 	testCrash=0;
@@ -54,7 +54,7 @@ void Car::setPosSensor(int idSensor)
 	sensorArray[idSensor].y2 = lengthSensor*sin(rotZ+sensorArray[idSensor].angleOffset)+posY;
 }
 
-int Car::refreshPosSensor(int idSensor, Line wall)
+void Car::refreshPosSensor(int idSensor, Line wall)
 {
 	Car::setPosSensor(idSensor);
 
@@ -72,15 +72,13 @@ int Car::refreshPosSensor(int idSensor, Line wall)
 
 			if(prop1 < 0.05) //test Crash voiture
 			{
-				return 1;
+				alive=false;
 			}
 		}
 	}
-
-	return 0;
 }
 
-int Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber) //retourne 1 si crash
+void Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber) //retourne 1 si crash
 {
 	Car::setPosSensor(idSensor);
 
@@ -124,10 +122,9 @@ int Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber)
 
 		if(prop1Min < 0.05) //test Crash voiture
 		{
-			return 1;
+			alive=false;
 		}
 	}
-	return 0;
 }
 
 std::vector<float> Car::getLengthSensors()
