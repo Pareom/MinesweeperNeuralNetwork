@@ -15,6 +15,7 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, in
 {
 	lengthSensor=100;
 	testCrash=0;
+	ticks=0;
 
 	//préparation cerveau
 	vector<int> layerSize;
@@ -34,6 +35,7 @@ Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int
 {
 	lengthSensor=100;
 	testCrash=0;
+	ticks=0;
 	//préparation cerveau
 	vector<int> layerSize;
 	layerSize.push_back(5);
@@ -73,6 +75,7 @@ void Car::refreshPosSensor(int idSensor, Line wall)
 			if(prop1 < 0.05) //test Crash voiture
 			{
 				alive=false;
+				//cout << "Score : " << this->getTicks() << endl;
 			}
 		}
 	}
@@ -122,7 +125,11 @@ void Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber
 
 		if(prop1Min < 0.05) //test Crash voiture
 		{
-			alive=false;
+			if (alive == true)
+			{
+				alive=false;
+				cout << "Score : " << this->getTicks() << endl;
+			}
 		}
 	}
 }
@@ -152,6 +159,8 @@ void Car::moveCar()
     }
     this->posX += speed * cos(this->rotZ);
     this->posY += speed * sin(this->rotZ);
+
+	ticks += 1;
 }
 
 int Car::evalue()
@@ -179,4 +188,9 @@ float Car::getposY()
 float Car::getrotZ()
 {
 	return this->rotZ;
+}
+
+int Car::getTicks()
+{
+	return this->ticks;
 }
