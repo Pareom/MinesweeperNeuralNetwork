@@ -26,19 +26,25 @@ int main()
     int carsNumber(8);
     int carLeft=carsNumber;
     vector<Car> carArray;
+    int offSetWall(100);
 
     for (int i=0; i<carsNumber; i++)    //Remplissage du tableau des voitures
     {
-        carArray.push_back(Car(i, 300, 300, -180/*+i*45*/, rand()%240, rand()%240, rand()%240)); // Création des voitures
+        carArray.push_back(Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240)); // Création des voitures
     }
 
-    int wallsNumber(4); // Nombre de murs
+    int wallsNumber(4+4); // Nombre de murs
     vector<Line> wallArray; //Tableau des murs
 
     wallArray.push_back(Line(5,5,5,595)); //Remplissage du tableau des murs
     wallArray.push_back(Line(595,5,595,595));
     wallArray.push_back(Line(5,5,595,5));
     wallArray.push_back(Line(5,595,595,595));
+
+    wallArray.push_back(Line(5+offSetWall,5+offSetWall,5+offSetWall,595-offSetWall)); //Remplissage du tableau des murs interieurs
+    wallArray.push_back(Line(595-offSetWall,5+offSetWall,595-offSetWall,595-offSetWall));
+    wallArray.push_back(Line(5+offSetWall,5+offSetWall,595-offSetWall,5+offSetWall));
+    wallArray.push_back(Line(5+offSetWall,595-offSetWall,595-offSetWall,595-offSetWall));
 
     while (window.isOpen())  // Boucle principale + Affichage
     {
