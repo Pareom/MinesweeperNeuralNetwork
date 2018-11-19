@@ -33,7 +33,7 @@ int main()
         carArray.push_back(Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240)); // Création des voitures
     }
 
-    int wallsNumber(4+4); // Nombre de murs
+    int wallsNumber(4+4); // Nombre de murs (4 exterieurs + 4 interieurs)
     vector<Line> wallArray; //Tableau des murs
 
     wallArray.push_back(Line(5,5,5,595)); //Remplissage du tableau des murs

@@ -31,6 +31,7 @@ class Car
 	  NNetwork brain;
 		bool alive;
 		int getTicks();
+		int getIdCar();
 	private:
 
 		int idCar;

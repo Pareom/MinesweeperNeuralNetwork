@@ -75,7 +75,7 @@ void Car::refreshPosSensor(int idSensor, Line wall)
 			if(prop1 < 0.05) //test Crash voiture
 			{
 				alive=false;
-				//cout << "Score : " << this->getTicks() << endl;
+				cout << "Score : " << this->getTicks() << endl;
 			}
 		}
 	}
@@ -193,4 +193,9 @@ float Car::getrotZ()
 int Car::getTicks()
 {
 	return this->ticks;
+}
+
+int Car::getIdCar()
+{
+	return this->idCar;
 }
