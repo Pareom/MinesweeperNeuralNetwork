@@ -153,8 +153,8 @@ void Car::moveCar()
     {
         this->rotZ += 0.02;
     }
-    this->posX += speed * cos(this->rotZ*2*PI/360);
-    this->posY += speed * sin(this->rotZ*2*PI/360);
+    this->posX += speed * cos(this->rotZ);
+    this->posY += speed * sin(this->rotZ);
 }
 
 int Car::evalue()

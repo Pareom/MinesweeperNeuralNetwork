@@ -92,7 +92,7 @@ int main()
 
             window.display();
 
-            usleep(10000); // Attente 0.5 sec
+            usleep(20000); // Attente 0.5 sec
 
         }
         // Affichage de l'écran de fin
