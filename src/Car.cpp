@@ -14,8 +14,11 @@ using namespace std;
 Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, int B) : colorR(R), colorG(G), colorB(B), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar),posX(i_posX), posY(i_posY), rotZ(i_rotZ)
 {
 	lengthSensor=100;
+<<<<<<< HEAD
+=======
 	testCrash=0;
 	ticks=0;
+>>>>>>> a85dd611709dab8197dfebb1ca423f9adcb08a77
 
 	//préparation cerveau
 	vector<int> layerSize;
@@ -34,15 +37,17 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, in
 Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(100), posY(100), rotZ(90)
 {
 	lengthSensor=100;
+<<<<<<< HEAD
+=======
 	testCrash=0;
 	ticks=0;
+>>>>>>> a85dd611709dab8197dfebb1ca423f9adcb08a77
 	//préparation cerveau
 	vector<int> layerSize;
 	layerSize.push_back(5);
 	layerSize.push_back(16);
 	layerSize.push_back(2);
 	brain = NNetwork(layerSize);
-	//
 	for(int i=0; i<5; i++)
 	{
 		sensorArray.push_back(Sensor(i,-(PI/2)+i*(PI/4),0,0));
@@ -50,6 +55,24 @@ Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int
 	}
 }
 
+Car::Car(Car const& a, Car const& b, int i_idCar) : colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(50), posY(50), rotZ(90)
+{
+	//préparation cerveau
+	vector<int> layerSize;
+	layerSize.push_back(5);
+	layerSize.push_back(16);
+	layerSize.push_back(2);
+	brain = NNetwork(layerSize);
+	//Mix des cerveaux
+	brain.gimmebaby(a.brain,b.brain);
+	//Placement de la voiture et des senseurs
+	lengthSensor=a.lengthSensor;
+	for(int i=0; i<5; i++)
+	{
+		sensorArray.push_back(Sensor(i,-(PI/2)+i*(PI/4),0,0));
+		Car::setPosSensor(i);
+	}
+}
 void Car::setPosSensor(int idSensor)
 {
 	sensorArray[idSensor].x2 = lengthSensor*cos(rotZ+sensorArray[idSensor].angleOffset)+posX;
