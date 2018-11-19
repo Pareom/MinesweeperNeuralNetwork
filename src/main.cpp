@@ -23,7 +23,7 @@ int main()
 
     Graphic test; // Création de la classe Graphic
 
-    int carsNumber(8);
+    int carsNumber(800);
     int carLeft=carsNumber;
     vector<Car> carArray;
     int offSetWall(100);
@@ -50,7 +50,7 @@ int main()
     {
         sf::Event event;
 
-        while(carLeft!=0)//Tant qu'il y a des voitures en vies
+        while(carLeft!=-1)//Tant qu'il y a des voitures en vies
         {
 
             while (window.pollEvent(event))
@@ -98,7 +98,7 @@ int main()
 
             window.display();
 
-            usleep(20000); // Attente 0.5 sec
+            usleep(10000); // Attente 0.5 sec
 
         }
         // Affichage de l'écran de fin
