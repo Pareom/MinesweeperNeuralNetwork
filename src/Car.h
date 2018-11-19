@@ -31,6 +31,8 @@ class Car
 		int colorB;
 	  NNetwork brain;
 		bool alive;
+		int getTicks();
+		int getIdCar();
 	private:
 
 		int idCar;
@@ -38,6 +40,7 @@ class Car
 		float posY;
 		float rotZ;
 		float lengthSensor;
+		int ticks;
 
 };
 
