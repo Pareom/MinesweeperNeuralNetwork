@@ -32,6 +32,7 @@ class Car
 		bool alive;
 		int getTicks();
 		int getIdCar();
+		
 	private:
 
 		int idCar;

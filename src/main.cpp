@@ -113,5 +113,8 @@ int main()
     }
 
     window.close();
+
+    carArray.clear();
+    cout << carArray.size() << endl;
 	return 0;
 }
