@@ -11,7 +11,7 @@ class Layer
     Layer();
     Layer(Layer const& toCopy);
     Layer(int const& nbIn, int const& nbOut);
-    Layer(std::vector<int> const& v);
+    Layer(std::vector<float> const& v);
     //Couche(std::string nom, int degats);
     //void changer(std::string nom, int degats);
     void randomFilling();//Initialisations

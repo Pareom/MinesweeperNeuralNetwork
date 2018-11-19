@@ -17,7 +17,7 @@ Layer::Layer(int const& m_nbIn, int const& m_nbOut): nbIn(m_nbIn),nbOut(m_nbOut)
 {
     randomFilling();
 }
-Layer::Layer(vector<int> const& v): nbIn(1),nbOut(v.size())
+Layer::Layer(vector<float> const& v): nbIn(1),nbOut(v.size())
 {
     randomFilling();//Clean this
     for(int i=0; i<(int)v.size(); i++)

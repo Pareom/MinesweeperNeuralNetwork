@@ -10,10 +10,10 @@ class NNetwork // Classe nNetwork
 {
     public:
 
-    NNetwork(std::vector<int> layerSize);
+    NNetwork(std::vector<int> const& layerSize);
     NNetwork(NNetwork const& a);
     void setLayers(std::vector<int> layerSize);
-    void evalue(std::vector<int> const& v);
+    int evalue(std::vector<float> const& v);
     int fitness(int const& shot);
     void gimmebaby(NNetwork a, NNetwork b);
     void setLayer(int i, float number,int k, int l);

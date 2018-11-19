@@ -5,11 +5,13 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include <SFML/Graphics.hpp>
+
 using namespace std;
 
 #define PI 3.14159265359
 
-Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar), posX(i_posX), posY(i_posY), rotZ(i_rotZ), brain(std::vector<int>(2,1))
+Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, int B) : colorR(R), colorG(G), colorB(B), brain(std::vector<int>(2,1)), idCar(i_idCar), posX(i_posX), posY(i_posY), rotZ(i_rotZ)
 {
 	lengthSensor=100;
 	testCrash=0;
@@ -19,7 +21,7 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar)
 	layerSize.push_back(5);
 	layerSize.push_back(16);
 	layerSize.push_back(2);
-	NNetwork brain(layerSize);
+	brain = NNetwork(layerSize);
 	//
 	for(int i=0; i<5; i++)
 	{
@@ -28,9 +30,8 @@ Car::Car(int i_idCar, float i_posX, float i_posY, float i_rotZ) : idCar(i_idCar)
 	}
 }
 
-Car::Car(int i_idCar) : idCar(i_idCar), posX(100), posY(100), rotZ(45), brain(std::vector<int>(2,1))
+Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int>(2,1)), idCar(i_idCar), posX(100), posY(100), rotZ(90)
 {
-
 	lengthSensor=100;
 	testCrash=0;
 	//préparation cerveau
@@ -38,7 +39,7 @@ Car::Car(int i_idCar) : idCar(i_idCar), posX(100), posY(100), rotZ(45), brain(st
 	layerSize.push_back(5);
 	layerSize.push_back(16);
 	layerSize.push_back(2);
-	NNetwork brain (layerSize);
+	brain = NNetwork(layerSize);
 	//
 	for(int i=0; i<5; i++)
 	{
@@ -120,7 +121,6 @@ int Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber)
 	{
 		sensorArray[idSensor].x2 = (sensorArray[idSensor].x2-this->posX)*prop1Min + this->posX;
 		sensorArray[idSensor].y2 = (sensorArray[idSensor].y2-this->posY)*prop1Min + this->posY;
-		cout << prop1Min << endl;
 
 		if(prop1Min < 0.05) //test Crash voiture
 		{
@@ -128,6 +128,38 @@ int Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber)
 		}
 	}
 	return 0;
+}
+
+std::vector<float> Car::getLengthSensors()
+{
+	vector<float> RealLengthSensor;
+
+	for(int i=0; i<5; i++)
+	{
+		RealLengthSensor.push_back(pow(pow(sensorArray[i].x2-this->posX,2)+pow(sensorArray[i].y2-this->posY,2),0.5));
+	}
+	return RealLengthSensor;
+}
+
+void Car::moveCar()
+{
+		int move = evalue();
+    float speed=2;
+    if(move==1)
+    {
+        this->rotZ -= 0.02;
+    }
+    if(move==2)
+    {
+        this->rotZ += 0.02;
+    }
+    this->posX += speed * cos(this->rotZ*2*PI/360);
+    this->posY += speed * sin(this->rotZ*2*PI/360);
+}
+
+int Car::evalue()
+{
+	return brain.evalue(Car::getLengthSensors());
 }
 
 void Car::setPosCar(float newposX, float newposY, float newrotZ)

@@ -3,11 +3,11 @@
 
 using namespace std;
 
-NNetwork::NNetwork(vector<int> layerSize)//Normal
+NNetwork::NNetwork(vector<int> const& layerSize)//Normal
 {
     setLayers(layerSize);
-    toString();
-    cout<<endl;
+    //toString();
+    //cout<<endl;
 }
 NNetwork::NNetwork(NNetwork const& a)
 {
@@ -25,17 +25,27 @@ void NNetwork::setLayers(vector<int> layerSize)
     }
 }
 
-void NNetwork::evalue(vector<int> const& v)
+int NNetwork::evalue(vector<float> const& v)
 {
-    cout << "----------Evalue---------"<<endl;
-    Layer copy(v);
+  int iMax=0;
+  float nMax;
+    vector<float> test(5,1);
+    Layer copy(v);//mettre "v" à la place de test
+
     for(int i=0; i<(int)this->layers.size(); i++)
     {
         copy=copy*layers[i];
-
     }
-    copy.toString();
-
+    nMax=copy.getMatrixComponent(0,0);
+    for(int i=0; i<copy.getNbOut(); i++)
+    {
+      if(nMax<copy.getMatrixComponent(0,i))
+      {
+        iMax=i;
+        nMax=copy.getMatrixComponent(0,i);
+      }
+    }
+    return iMax;
 }
 int NNetwork::fitness(int const& shot)
 {
@@ -44,7 +54,6 @@ int NNetwork::fitness(int const& shot)
 void NNetwork::gimmebaby(NNetwork a, NNetwork b)
 {
   int mutation=5;
-  int wich=0, cpt=0;
   int max; //sure?
   //NNetwork c(a);//Faire la copy(construct), faire un destructeur
   for(int i=0; i<a.getLayerSize(); i++)

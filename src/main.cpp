@@ -2,6 +2,7 @@
 #include "Car.h"
 #include "Sensor.h"
 #include "Line.h"
+#include "nNetwork.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
@@ -9,38 +10,38 @@
 #include <math.h>
 #include <time.h>
 
-#define PI 3.14159265359
-
 using namespace std;
-
-void moveCar(Car *c1, int left);
 
 int main()
 {
+    vector<float> displayLengthTest; // Vecteur 5 float des longueurs des capteurs
 
-
-    srand (time(NULL));
+    srand (time(NULL)); // Initialisation du random
 
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
 
-    int testEnd(0);
+    int testEnd(0); // test de Crash
 
-    Graphic test;
-    Car voiture1(1);
+    Graphic test; // Création de la classe Graphic
 
-    cout << "voiture crée" << endl;
+    int carsNumber(8);
+    vector<Car> carArray;
 
-    //----Les Murs----
-    int wallsNumber(2);
+    for (int i=0; i<carsNumber; i++)    //Remplissage du tableau des voitures
+    {
+        carArray.push_back(Car(i, 300, 300, -180+i*45, 120*(1+rand()%2), 120*rand()%3, 120*rand()%3)); // Création des voitures
+    }
+
+    int wallsNumber(4); // Nombre de murs
     vector<Line> wallArray; //Tableau des murs
 
-    wallArray.push_back(Line(140,80,140,600)); //Remplissage du tableau des murs
-    wallArray.push_back(Line(160,0,160,600));
+    wallArray.push_back(Line(5,5,5,595)); //Remplissage du tableau des murs
+    wallArray.push_back(Line(595,5,595,595));
+    wallArray.push_back(Line(5,5,595,5));
+    wallArray.push_back(Line(5,595,595,595));
 
-    cout << "Murs crées" << endl;
-    //----------------
 
-    while (window.isOpen())
+    while (window.isOpen())  // Boucle principale + Affichage
     {
         sf::Event event;
 
@@ -63,22 +64,38 @@ int main()
                 test.drawLine(wallArray[i],window);
             }
 
-            for(int i=0; i<5; i++) //Calcul des Capteurs (collision)
+            for(int i=0; i<carsNumber; i++)
             {
-                testEnd+=voiture1.refreshPosSensor(i, wallArray, wallsNumber);
+
+                carArray[i].moveCar(); // Déplacement de la voiture pour le prochain tour
+                for(int j=0; j<5; j++) //Calcul des Capteurs (collision)
+                {
+                    testEnd+=carArray[i].refreshPosSensor(j, wallArray, wallsNumber);
+                }
+
+                displayLengthTest = carArray[i].getLengthSensors();  //Récuperation des longueurs des capteurs
+
+
+                test.drawCar(carArray[i],window); // Affichage de la voiture
+
+                test.drawSensors(carArray[i],window); // Affichage des capteurs
+
+
             }
 
-            test.drawCar(voiture1,window); // Affichage de la voiture
-
-            test.drawSensors(voiture1,window); // Affichage des capteurs
+            /*for(int i=0; i<5; i++)                      // Affichage des longueurs des capteurs
+            {
+                cout << "Capteur numéro " << i << " : Length = " << displayLengthTest[i] << endl;
+            }
+            cout << endl;
+            */
 
             window.display();
 
-            moveCar(&voiture1, rand()%2); // Déplacement de la voiture
-
-            usleep(100000); // Attente 0.5 sec
+            usleep(10000); // Attente 0.5 sec
 
         }
+        // Affichage de l'écran de fin
 
         window.clear();
         test.writeCrash(window);
@@ -91,23 +108,4 @@ int main()
 
     window.close();
 	return 0;
-}
-
-void moveCar(Car *c1, int left)
-{
-    float newrotZ;
-    float speed=2;
-    if(left==1)
-    {
-        newrotZ = (c1->getrotZ()) - 0.02;
-    }
-    else
-    {
-        newrotZ = (c1->getrotZ()) + 0.02;
-    }
-
-    float newposX( ( c1->getposX() ) + speed * cos(newrotZ*2*PI/360));
-    float newposY( ( c1->getposY() ) + speed * sin(newrotZ*2*PI/360));
-
-    c1->setPosCar(newposX, newposY, newrotZ);
 }
