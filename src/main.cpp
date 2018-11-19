@@ -20,7 +20,6 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
 
-    int testEnd(0); // test de Crash
 
     Graphic test; // Création de la classe Graphic
 
@@ -45,7 +44,7 @@ int main()
     {
         sf::Event event;
 
-        while(testEnd==0)
+        while(carLeft!=0)//Tant qu'il y a des voitures en vies
         {
 
             while (window.pollEvent(event))
@@ -58,16 +57,17 @@ int main()
             }
 
             window.clear();
-
             for(int i=0; i<wallsNumber; i++) //Affichage des murs
             {
                 test.drawLine(wallArray[i],window);
             }
 
+            carLeft=0;
             for(int i=0; i<carsNumber; i++)
             {
               if(carArray[i].alive)
               {
+                carLeft++;
                 carArray[i].moveCar(); // Déplacement de la voiture pour le prochain tour
                 for(int j=0; j<5; j++) //Calcul des Capteurs (collision)
                 {
@@ -83,7 +83,6 @@ int main()
 
 
             }
-
             /*for(int i=0; i<5; i++)                      // Affichage des longueurs des capteurs
             {
                 cout << "Capteur numéro " << i << " : Length = " << displayLengthTest[i] << endl;

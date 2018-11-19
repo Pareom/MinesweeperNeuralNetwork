@@ -1,6 +1,6 @@
 all:		main
 	rm *.o
-#	./bin/main
+	./bin/main
 main:		main.o Graphic.o Car.o Sensor.o Line.o nNetwork.o layer.o
 			g++ main.o Graphic.o Car.o Sensor.o Line.o nNetwork.o layer.o -o ./bin/main -lsfml-graphics -lsfml-window -lsfml-system
 
