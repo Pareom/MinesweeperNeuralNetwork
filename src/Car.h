@@ -14,6 +14,7 @@ class Car
 
 		Car(int i_idCar, float i_posX, float i_posY, float i_rotZ, int R, int G, int B);
 		Car(int i_idCar);
+		Car(Car const& a);
 		Car(Car const& a, Car const& b, int i_idCar);
 		void setPosSensor(int idSensor);
 		void refreshPosSensor(int idSensor, Line wall); //retourne 1 si crash
@@ -32,7 +33,7 @@ class Car
 	  NNetwork brain;
 		bool alive;
 		int getTicks();
-		int getSize();
+		int getfitness();
 		int getIdCar();
 
 	private:

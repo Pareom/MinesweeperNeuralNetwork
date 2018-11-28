@@ -17,51 +17,27 @@ int main()
     vector<float> displayLengthTest; // Vecteur 5 float des longueurs des capteurs
 
     srand (time(NULL)); // Initialisation du random
-
+    int j;
+    int choix, somme, parentA, parentB, TotalGenSize; // Will be used further for reproduction
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
-
-    int nbIteration(3);
+    int nbIteration(15);
     Graphic test; // Création de la classe Graphic
     int ticks(0);
-    int carsNumber(1000);
+    int carsNumber(120);
     int carLeft=carsNumber;
+    vector<Car> copyCarArray;
     vector<Car> carArray;
     vector<Car> babyCarArray;
     int offSetWall(50);
 
+    Car a = Car(0, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
     for (int i=0; i<carsNumber; i++)    //Remplissage du tableau des voitures
     {
-        carArray.push_back(Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240)); // Création des voitures
+        a = Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
+        carArray.push_back(a); // Création des voitures
     }
 
     vector<Line> wallArray; //Tableau des murs
-
-    wallArray.push_back(Line(5,5,5,595)); //Remplissage du tableau des murs
-    wallArray.push_back(Line(595,5,595,595));
-    wallArray.push_back(Line(5,5,595,5));
-    wallArray.push_back(Line(5,595,595,595));
-    /*
-    wallArray.push_back(Line(5+offSetWall,5+offSetWall,5+offSetWall,595-offSetWall)); //Remplissage du tableau des murs interieurs
-    wallArray.push_back(Line(595-offSetWall,5+offSetWall,595-offSetWall,595-offSetWall));
-    wallArray.push_back(Line(5+offSetWall,5+offSetWall,595-offSetWall,5+offSetWall));
-    wallArray.push_back(Line(5+offSetWall,595-offSetWall,595-offSetWall,595-offSetWall));
-    */
-    //Ligne à la droite du départ
-    wallArray.push_back((Line(100,5,100,495)));
-    wallArray.push_back((Line(100,495,545,545)));
-//Ligne par dessus Ilot DB
-    wallArray.push_back((Line(595,355,300,250)));
-    wallArray.push_back((Line(300,250,230,450)));
-    wallArray.push_back((Line(230,450,200,430)));
-    wallArray.push_back((Line(200,430,150,300)));
-    wallArray.push_back((Line(150,300,120,100)));
-    wallArray.push_back((Line(120,100,140,45)));
-    wallArray.push_back((Line(140,45,595,45)));
-//Ilot Droite Bas(DB)
-    wallArray.push_back((Line(300,340,280,450)));//gauche
-    wallArray.push_back((Line(280,450,480,480)));//bas
-    wallArray.push_back((Line(480,480,480,340)));//droite
-    wallArray.push_back((Line(300,340,480,340)));//haut
 
     while (window.isOpen())  // Boucle principale + Affichage
     {
@@ -69,7 +45,37 @@ int main()
         while(nbIteration!=0)
         {
           nbIteration--;
-          while(carLeft!=-1)//Tant qu'il y a des voitures en vies
+
+          wallArray.push_back(Line(5,5,5,595)); //Remplissage du tableau des murs
+          wallArray.push_back(Line(595,5,595,595));
+          wallArray.push_back(Line(5,5,595,5));
+          wallArray.push_back(Line(5,595,595,595));
+          /*
+          wallArray.push_back(Line(5+offSetWall,5+offSetWall,5+offSetWall,595-offSetWall)); //Remplissage du tableau des murs interieurs
+          wallArray.push_back(Line(595-offSetWall,5+offSetWall,595-offSetWall,595-offSetWall));
+          wallArray.push_back(Line(5+offSetWall,5+offSetWall,595-offSetWall,5+offSetWall));
+          wallArray.push_back(Line(5+offSetWall,595-offSetWall,595-offSetWall,595-offSetWall));
+          */
+          //Ligne à la droite du départ
+          wallArray.push_back((Line(100,5,100,495)));
+          wallArray.push_back((Line(100,495,545,545)));
+      //Ligne par dessus Ilot DB
+          wallArray.push_back((Line(595,355,300,250)));
+          wallArray.push_back((Line(300,250,230,450)));
+          wallArray.push_back((Line(230,450,200,430)));
+          wallArray.push_back((Line(200,430,150,300)));
+          wallArray.push_back((Line(150,300,120,100)));
+          wallArray.push_back((Line(120,100,140,45)));
+          wallArray.push_back((Line(140,45,595,45)));
+      //Ilot Droite Bas(DB)
+          wallArray.push_back((Line(300,340,280,450)));//gauche
+          wallArray.push_back((Line(280,450,1480,480)));//bas
+          wallArray.push_back((Line(1480,480,480,340)));//droite
+          wallArray.push_back((Line(300,340,480,340)));//haut
+          ticks = 0;
+          carLeft=carsNumber;
+
+          while(carLeft!=0 && ticks<1300)//Tant qu'il y a des voitures en vies
           {
             ticks++;
             if(ticks==60){//Murs pour tuer ceux qui tournent au début
@@ -93,7 +99,7 @@ int main()
               }
 
               window.clear();
-              for(int i=0; i<wallArray.size(); i++) //Affichage des murs
+              for(int i=0; i<(int)wallArray.size(); i++) //Affichage des murs
               {
                   test.drawLine(wallArray[i],window);
               }
@@ -109,27 +115,55 @@ int main()
                   {
                       carArray[i].refreshPosSensor(j, wallArray, wallArray.size());
                   }
-
                   displayLengthTest = carArray[i].getLengthSensors();  //Récuperation des longueurs des capteurs
 
-
                   test.drawCar(carArray[i],window); // Affichage de la voiture
-
                   test.drawSensors(carArray[i],window); // Affichage des capteurs
-
                 }
               }
               window.display();
 
               usleep(10000); // Attente 0.5 sec
-            }//Toutes les voitures sont mortes(ou ont finis)
-            TotalGenSize=0;
-            for(int i=0; i<carArray.size(); i++)
+          }//Toutes les voitures sont mortes(ou ont finis)
+          //Détruire les murs de collision
+          while(!wallArray.empty())
+          {
+            wallArray.pop_back();
+          }
+          TotalGenSize=0;
+          copyCarArray.clear();
+          for(int i=((int)carArray.size()-1); i>=0; i--)
+          {
+            TotalGenSize+=carArray[i].getfitness();
+            copyCarArray.push_back(Car(carArray[i]));
+            carArray.pop_back();
+          }
+          for(int i=0; i<(int)copyCarArray.size(); i++)
+          {
+            somme=0;
+            parentA=0;
+            parentB=0;
+            choix=rand()%TotalGenSize;
+            j = 0;
+            while(somme<choix && j<copyCarArray.size())
             {
-              TotalGenSize+=carArray[i].getSize();//Implent this
+              somme+=copyCarArray[j].getfitness();
+              j++;
             }
-            //Check for the best Car and put it straight
-            //into the baby vector
+            parentA=j;
+            j=0;
+            somme=0;
+            choix=rand()%TotalGenSize;
+            while(somme<choix && j<copyCarArray.size())
+            {
+              somme+=copyCarArray[j].getfitness();
+              j++;
+            }
+            parentB=j;
+            carArray.push_back(Car(copyCarArray[parentA],copyCarArray[parentB],i));
+          }
+          //Check for the best Car and put it straight
+          //into the baby vector
 
         }
         // Affichage de l'écran de fin
@@ -146,6 +180,6 @@ int main()
     window.close();
 
     carArray.clear();
-    cout << carArray.size() << endl;
+    //cout << carArray.size() << endl;
 	return 0;
 }

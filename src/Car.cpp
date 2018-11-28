@@ -47,9 +47,22 @@ Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int
 	}
 }
 
+//copy
+Car::Car(Car const& a): colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(a.brain), alive(a.alive), idCar(a.idCar), posX(50), posY(50), rotZ(90), lengthSensor(a.lengthSensor), ticks(a.ticks)
+{
+	lengthSensor = 100;
+	for(int i=0; i<5; i++)
+	{
+		sensorArray.push_back(Sensor(i,-(PI/2)+i*(PI/4),0,0));
+		Car::setPosSensor(i);
+	}
+}
+
+// The "gimmebaby" intatiation for cars
 Car::Car(Car const& a, Car const& b, int i_idCar) : colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(50), posY(50), rotZ(90)
 {
 	//préparation cerveau
+	ticks = 0;
 	vector<int> layerSize;
 	layerSize.push_back(5);
 	layerSize.push_back(16);
@@ -65,6 +78,7 @@ Car::Car(Car const& a, Car const& b, int i_idCar) : colorR(a.colorR), colorG(a.c
 		Car::setPosSensor(i);
 	}
 }
+
 void Car::setPosSensor(int idSensor)
 {
 	sensorArray[idSensor].x2 = lengthSensor*cos(rotZ+sensorArray[idSensor].angleOffset)+posX;
@@ -90,7 +104,7 @@ void Car::refreshPosSensor(int idSensor, Line wall)
 			if(prop1 < 0.05) //test Crash voiture
 			{
 				alive=false;
-				cout << "Score : " << this->getTicks() << endl;
+				//cout << "Score : " << this->getTicks() << endl;
 			}
 		}
 	}
@@ -143,7 +157,7 @@ void Car::refreshPosSensor(int idSensor, vector<Line> wallArray, int wallsNumber
 			if (alive == true)
 			{
 				alive=false;
-				cout << "Score : " << this->getTicks() << endl;
+				//cout << "Score : " << this->getTicks() << endl;
 			}
 		}
 	}
@@ -209,11 +223,12 @@ int Car::getTicks()
 {
 	return this->ticks;
 }
-int Car::getTicks()
-{
-	return this->ticks*this->ticks;
-}
 int Car::getIdCar()
 {
 	return this->idCar;
+}
+
+int Car::getfitness()
+{
+	return this->ticks*this->ticks;
 }

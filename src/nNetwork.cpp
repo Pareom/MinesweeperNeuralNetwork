@@ -80,7 +80,6 @@ void NNetwork::gimmebaby(NNetwork a, NNetwork b)
       }
     }
   }
-  this->toString();
 }
 void NNetwork::setLayer(int i, float number,int k, int l)
 {
@@ -104,5 +103,4 @@ void NNetwork::toString()
     {
         this->layers[i].toString();
     }
-
 }
