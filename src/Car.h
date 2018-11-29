@@ -35,6 +35,7 @@ class Car
 		int getTicks();
 		int getfitness();
 		int getIdCar();
+		int ticks;
 
 	private:
 
@@ -43,7 +44,6 @@ class Car
 		float posY;
 		float rotZ;
 		float lengthSensor;
-		int ticks;
 
 };
 

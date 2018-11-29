@@ -20,10 +20,10 @@ int main()
     int j;
     int choix, somme, parentA, parentB, TotalGenSize; // Will be used further for reproduction
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
-    int nbIteration(15);
+    int nbIteration(5);
     Graphic test; // Création de la classe Graphic
     int ticks(0);
-    int carsNumber(120);
+    int carsNumber(12);
     int carLeft=carsNumber;
     vector<Car> copyCarArray;
     vector<Car> carArray;
@@ -74,8 +74,7 @@ int main()
           wallArray.push_back((Line(300,340,480,340)));//haut
           ticks = 0;
           carLeft=carsNumber;
-
-          while(carLeft!=0 && ticks<1300)//Tant qu'il y a des voitures en vies
+          while(carLeft!=0 && ticks<130)//Tant qu'il y a des voitures en vies
           {
             ticks++;
             if(ticks==60){//Murs pour tuer ceux qui tournent au début
@@ -132,6 +131,7 @@ int main()
           }
           TotalGenSize=0;
           copyCarArray.clear();
+          //Copy cars in a vector
           for(int i=((int)carArray.size()-1); i>=0; i--)
           {
             TotalGenSize+=carArray[i].getfitness();
@@ -145,26 +145,23 @@ int main()
             parentB=0;
             choix=rand()%TotalGenSize;
             j = 0;
-            while(somme<choix && j<copyCarArray.size())
+            while(somme<choix && j<(int)copyCarArray.size())
             {
               somme+=copyCarArray[j].getfitness();
               j++;
             }
-            parentA=j;
+            parentA=j-1;
             j=0;
             somme=0;
             choix=rand()%TotalGenSize;
-            while(somme<choix && j<copyCarArray.size())
+            while(somme<choix && j<(int)copyCarArray.size())
             {
               somme+=copyCarArray[j].getfitness();
               j++;
             }
-            parentB=j;
+            parentB=j-1;
             carArray.push_back(Car(copyCarArray[parentA],copyCarArray[parentB],i));
           }
-          //Check for the best Car and put it straight
-          //into the baby vector
-
         }
         // Affichage de l'écran de fin
 
