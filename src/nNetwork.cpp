@@ -55,7 +55,7 @@ int NNetwork::fitness(int const& shot)
 }
 void NNetwork::gimmebaby(NNetwork a, NNetwork b)
 {
-  int mutation=5;
+  int mutation=100;
   int max; //sure?
   //NNetwork c(a);//Faire la copy(construct), faire un destructeur
   for(int i=0; i<a.getLayerSize(); i++)

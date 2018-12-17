@@ -22,21 +22,23 @@ int main()
     int bestscore;
     int choix, somme, parentA, parentB, TotalGenSize; // Will be used further for reproduction
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
-    int nbIteration(5);
+    int nbIteration(50);
     Graphic test; // Création de la classe Graphic
     int ticks(0);
-    int carsNumber(12);
+    int carsNumber(40);
     int carLeft=carsNumber;
     vector<Car> copyCarArray;
     vector<Car> carArray;
     vector<Car> babyCarArray;
     int offSetWall(50);
 
-    Car a = Car(0, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
+    //Car a = Car(0, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
     for (int i=0; i<carsNumber; i++)    //Remplissage du tableau des voitures
     {
-        a = Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
-        carArray.push_back(a); // Création des voitures
+        //a = Car(i, offSetWall/2, offSetWall/2, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
+        //a = Car(i, 10050, 350, -180/*+i*45*/, rand()%240, rand()%240, rand()%240);
+        carArray.push_back(Car(i, -50, 350, -180/*+i*45*/, rand()%240, rand()%240, rand()%24)); // Création des voitures
+
     }
 
     vector<Line> wallArray; //Tableau des murs
@@ -61,6 +63,7 @@ int main()
           //Ligne à la droite du départ
           wallArray.push_back((Line(100,5,100,495)));
           wallArray.push_back((Line(100,495,545,545)));
+          wallArray.push_back((Line(100,400,200,505)));
       //Ligne par dessus Ilot DB
           wallArray.push_back((Line(595,355,300,250)));
           wallArray.push_back((Line(300,250,230,450)));

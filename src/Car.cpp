@@ -48,7 +48,7 @@ Car::Car(int i_idCar) : colorR(255), colorG(0), colorB(0), brain(std::vector<int
 }
 
 //copy
-Car::Car(Car const& a): colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(a.brain), alive(a.alive), idCar(a.idCar), posX(50), posY(50), rotZ(90), lengthSensor(a.lengthSensor), ticks(a.ticks)
+Car::Car(Car const& a): colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(a.brain), alive(true), idCar(a.idCar), posX(50), posY(50), rotZ(90), lengthSensor(a.lengthSensor), ticks(a.ticks)
 {
 	lengthSensor = 100;
 	for(int i=0; i<5; i++)
@@ -59,7 +59,7 @@ Car::Car(Car const& a): colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), br
 }
 
 // The "gimmebaby" intatiation for cars
-Car::Car(Car const& a, Car const& b, int i_idCar) : colorR(a.colorR), colorG(a.colorG), colorB(a.colorB), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(50), posY(50), rotZ(90)
+Car::Car(Car const& a, Car const& b, int i_idCar) : colorR((a.colorR+b.colorR)/2), colorG((a.colorG+b.colorG)/2), colorB((a.colorB+b.colorB)/2), brain(std::vector<int>(2,1)), alive(true), idCar(i_idCar), posX(50), posY(50), rotZ(90)
 {
 	//préparation cerveau
 	ticks = 0;
@@ -180,11 +180,11 @@ void Car::moveCar()
     float speed=2;
     if(move==1)
     {
-        this->rotZ -= 0.08;
+        this->rotZ -= 0.04;
     }
-    if(move==2)
+    if(move==0)
     {
-        this->rotZ += 0.08;
+        this->rotZ += 0.04;
     }
     this->posX += speed * cos(this->rotZ);
     this->posY += speed * sin(this->rotZ);
