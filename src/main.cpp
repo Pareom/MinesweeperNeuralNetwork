@@ -18,6 +18,8 @@ int main()
 
     srand (time(NULL)); // Initialisation du random
     int j;
+    int best;
+    int bestscore;
     int choix, somme, parentA, parentB, TotalGenSize; // Will be used further for reproduction
     sf::RenderWindow window(sf::VideoMode(600, 600), "Cars race"); // Creation of the window
     int nbIteration(5);
@@ -74,7 +76,7 @@ int main()
           wallArray.push_back((Line(300,340,480,340)));//haut
           ticks = 0;
           carLeft=carsNumber;
-          while(carLeft!=0 && ticks<130)//Tant qu'il y a des voitures en vies
+          while(carLeft!=0 && ticks<1300)//Tant qu'il y a des voitures en vies
           {
             ticks++;
             if(ticks==60){//Murs pour tuer ceux qui tournent au début
@@ -132,13 +134,30 @@ int main()
           TotalGenSize=0;
           copyCarArray.clear();
           //Copy cars in a vector
-          for(int i=((int)carArray.size()-1); i>=0; i--)
+          best=0;
+          bestscore=0;
+          for(int i=((int)carArray.size()-1), cpt=0; i>=0; i--, cpt++)
           {
             TotalGenSize+=carArray[i].getfitness();
+            if(bestscore<carArray[i].getfitness())
+            {
+              cout << bestscore<<"<"<<carArray[i].getfitness() <<endl;
+              bestscore=carArray[i].getfitness();
+              best=cpt;
+              cout << i << " i;cpt "<< cpt<<endl;
+            }
             copyCarArray.push_back(Car(carArray[i]));
             carArray.pop_back();
           }
-          for(int i=0; i<(int)copyCarArray.size(); i++)
+          carArray.clear();
+          cout<<"cpt: "<<carArray.empty()<<endl<<endl;
+          cout<<"Monscore "<<carArray[0].getfitness()<<endl;
+          carArray.push_back(Car(copyCarArray[best]));// On garde le meilleur
+          cout<<"cpt: "<<carArray.empty()<<endl<<endl;
+          cout<<"Monscore "<<carArray[0].getfitness()<<endl;
+          carArray[0].ticks=0;//Pour pas qu'il cumule son score
+          carArray[0].idCar=0;
+          for(int i=1; i<(int)copyCarArray.size(); i++)
           {
             somme=0;
             parentA=0;

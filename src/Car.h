@@ -36,10 +36,10 @@ class Car
 		int getfitness();
 		int getIdCar();
 		int ticks;
+		int idCar;
 
 	private:
 
-		int idCar;
 		float posX;
 		float posY;
 		float rotZ;
