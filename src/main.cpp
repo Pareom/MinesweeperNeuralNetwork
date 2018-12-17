@@ -71,7 +71,7 @@ int main()
           wallArray.push_back((Line(140,45,595,45)));
       //Ilot Droite Bas(DB)
           wallArray.push_back((Line(300,340,280,450)));//gauche
-          wallArray.push_back((Line(280,450,1480,480)));//bas
+          wallArray.push_back((Line(230,450,1480,480)));//bas
           wallArray.push_back((Line(1480,480,480,340)));//droite
           wallArray.push_back((Line(300,340,480,340)));//haut
           ticks = 0;

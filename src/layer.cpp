@@ -6,6 +6,7 @@ using namespace std;
 Layer::Layer(){}
 Layer::Layer(Layer const& toCopy):nbIn(toCopy.getNbIn()), nbOut(toCopy.getNbOut())
 {
+    randomFilling();//Potentiellement à enlever
     for(int i=0; i<this->nbIn; i++){
         this->matrix.push_back(vector<float>(this->nbOut));
         for(int j=0; j<this->nbOut; j++){
