@@ -21,10 +21,12 @@ class NNetwork // Classe nNetwork
     Layer getLayer(int const& i) const;
     int getLayerSize() const;
     void toString();
+    void gradiant(std::vector<int> inputs, std::vector<int> const& wantedOutput, std::vector<int> const& actualOutput);
 
     private:
 
     std::vector<Layer> layers;
+    std::vector<Layer> inputs;
 };
 
 #endif

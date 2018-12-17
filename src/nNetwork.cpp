@@ -31,10 +31,12 @@ int NNetwork::evalue(vector<float> const& v)
   float nMax;
     vector<float> test(5,1);
     Layer copy(v);//mettre "v" à la place de test
+    this->inputs.push_back(copy);
 
     for(int i=0; i<(int)this->layers.size(); i++)
     {
         copy=copy*layers[i];
+        this->inputs.push_back(copy);
     }
     nMax=copy.getMatrixComponent(0,0);
     for(int i=0; i<copy.getNbOut(); i++)
@@ -103,4 +105,60 @@ void NNetwork::toString()
     {
         this->layers[i].toString();
     }
+}
+
+void NNetwork::gradiant(vector<int> inputs, vector<int> const& wantedOutput, vector<int> const& actualOutput)
+{
+    //Variables
+    vector<int> error;
+    vector<int> outputGradient;
+    vector<int> hiddenError;
+    int newWeight(0);
+    int speed(1); //Doit etre compris entre 0 et 1
+
+    int sum(0);
+
+    //couche de sorties
+    for(int i = 0; i<(int)wantedOutput.size(); i++) //Calcul de l'erreur
+    {
+        error.push_back(wantedOutput[i]+actualOutput[1]);
+    }
+
+    for(int i = 0; i<(int)error.size(); i++) //Calcul du gradient de sortie
+    {
+        outputGradient.push_back(error[0]*actualOutput[0]*(1-actualOutput[i]));
+    }
+
+    for(int i = 0; i<(int)this->layers[this->layers.size()-1].getNbIn(); i++)
+    {
+        for(int j = 0; i<(int)this->layers[this->layers.size()-1].getNbOut(); j++)
+        {
+            newWeight = this->layers[this->layers.size()-1].getMatrixComponent(i, j) + speed*outputGradient[i]*this->inputs[this->inputs.size()-1].getMatrixComponent(0,j);
+            this->layers[this->layers.size()-1].setMatrixComponent(i, j, newWeight);
+        }
+    }
+
+    //Couches cachées
+    for(int i = 0; i<(int)this->layers.size()-1; i++)
+    {
+        for(int j = 0; j < this->inputs[this->inputs.size()-1-i].getNbOut(); j++)
+        {
+            sum = 0;
+            for(int k = 0; k<(int)outputGradient.size(); k++)
+            {
+                sum += outputGradient[k]*this->layers[i].getMatrixComponent(k,j);
+            }
+            hiddenError.push_back(this->inputs[this->inputs.size()-1-i].getMatrixComponent(0,j)*(1-this->inputs[this->inputs.size()-1-i].getMatrixComponent(0,j))*sum);
+        }
+
+        for(int j = 0; j<(int)this->layers[this->layers.size()-2-i].getNbIn(); j++)
+        {
+            for(int k = 0; k<(int)this->layers[this->layers.size()-2-i].getNbOut(); k++)
+            {
+                newWeight = this->layers[this->layers.size()-2-i].getMatrixComponent(i, j) + speed*hiddenError[i]*this->inputs[this->inputs.size()-3-i].getMatrixComponent(0,j);
+                this->layers[this->layers.size()-2-i].setMatrixComponent(i, j, newWeight);
+            }
+        }
+    }
+
 }
